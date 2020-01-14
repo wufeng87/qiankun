@@ -1,4 +1,4 @@
-import { Button, Modal, version as antdVersion } from 'antd';
+import { Button, Modal, version as antdVersion, Input } from 'antd';
 import 'antd/dist/antd.min.css';
 import React, { lazy, Suspense, useState, version } from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
@@ -45,8 +45,24 @@ function App() {
   );
 }
 
-function Home() {
-  return <h2>Home</h2>;
+function Home(props) {
+  const [inputVal, setInputVal] = useState('');
+  function onChange(val) {
+    setInputVal(val.target.value);
+  }
+  function go() {
+    window.history.pushState({}, 'fssc', `/${inputVal}`);
+    // window.history.pushState({}, 'vue', '/vue');
+
+    // props.history.push(`/${inputVal}`);
+  }
+  return (
+    <div>
+      <h2>Home</h2>
+      <Input onChange={onChange} value={inputVal}></Input>
+      <Button onClick={go}>go</Button>
+    </div>
+  );
 }
 
 function About() {
