@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import { registerMicroApps, runAfterFirstMounted, setDefaultMountApp, start } from '../../es';
 import Framework from './Framework';
 // import Framework from './Framework.vue';
-
+// import "import-map-overrides"
 // let app = null;
 
 function render({ appContent, loading }) {
@@ -53,33 +53,40 @@ function initApp() {
 
 initApp();
 
-registerMicroApps(
-  [
-    { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
-    { name: 'react15 app', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
-    { name: 'vue app', entry: '//192.168.64.68:7101', render, activeRule: genActiveRule('/vue') },
-    { name: 'fssc', entry: '//192.168.64.68:8099', render, activeRule: genActiveRule('/fssc') },
-  ],
-  {
-    beforeLoad: [
-      app => {
-        console.log('before load', app);
-      },
+function startApp() {
+  registerMicroApps(
+    [
+      { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
+      { name: 'react15 app', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
+      { name: 'vue app', entry: '//192.168.64.68:7101', render, activeRule: genActiveRule('/vue') },
+      { name: 'fssc', entry: '//192.168.64.68:8099', render, activeRule: genActiveRule('/fssc') },
     ],
-    beforeMount: [
-      app => {
-        console.log('before mount', app);
-      },
-    ],
-    afterUnmount: [
-      app => {
-        console.log('after unload', app);
-      },
-    ],
-  },
-);
+    {
+      beforeLoad: [
+        app => {
+          console.log('before load', app);
+        },
+      ],
+      beforeMount: [
+        app => {
+          console.log('before mount', app);
+        },
+      ],
+      afterUnmount: [
+        app => {
+          console.log('after unload', app);
+        },
+      ],
+    },
+  );
 
-setDefaultMountApp('/react');
-runAfterFirstMounted(() => console.info('first app mounted'));
+  setDefaultMountApp('/react');
+  runAfterFirstMounted(() => console.info('first app mounted'));
 
-start({ prefetch: true });
+  start({ prefetch: true });
+}
+
+// 模拟个异步获取路由
+// setTimeout(() => {
+startApp();
+// }, 1000);

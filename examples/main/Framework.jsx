@@ -6,8 +6,9 @@
 import React from 'react';
 import style from './index.less';
 
-export default function Framework(props) {
+import Routes from './src/routes';
 
+export default function Framework(props) {
   const { content, loading } = props;
 
   function goto(title, href) {
@@ -34,7 +35,14 @@ export default function Framework(props) {
         </nav>
       </header>
       {loading ? <div>loading...</div> : null}
-      <div dangerouslySetInnerHTML={{ __html: content }} className={style.appContainer}/>
+      { content ?
+        <div dangerouslySetInnerHTML={{ __html: content }} className={style.appContainer}/>
+        : <div>
+          content in main
+
+          <Routes {...props}></Routes>
+        </div>
+      }
     </>
 
   );
