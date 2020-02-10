@@ -1,5 +1,7 @@
-const { name } = require('./package');
+const BabelEnginePlugin = require('babel-engine-plugin');
 
+const { name } = require('./package');
+const port = 7100;
 module.exports = {
   webpack: function override(config, env) {
     const copyConfig = { ...config };
@@ -7,6 +9,11 @@ module.exports = {
     copyConfig.output.library = `${name}-[name]`;
     copyConfig.output.libraryTarget = 'umd';
     copyConfig.output.jsonpFunction = `webpackJsonp_${name}`;
+    copyConfig.output.publicPath = `//localhost:${port}`;
+    // publicPath: `//localhost:${port}`;
+    // copyConfig.plugins.push( new BabelEnginePlugin({
+    //   presets: ['env']
+    // }))
     return config;
   },
   devServer: function(configFunction) {

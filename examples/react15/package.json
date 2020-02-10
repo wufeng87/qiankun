@@ -14,6 +14,7 @@
     "loadjs": "^4.2.0",
     "react": "15.6.2",
     "react-dom": "15.6.2",
+    "regenerator-runtime": "^0.13.3",
     "toast-loader": "^3.0.2"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
     "babel-loader": "^8.0.6",
+    "core-js": "^3.6.4",
     "css-loader": "^3.2.0",
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^1.0.0",
@@ -29,6 +31,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "browserslist": [
-    "last 2 Chrome versions"
+    ">0.2%",
+    "not ie <= 11",
+    "not op_mini all"
   ]
 }

@@ -112,7 +112,8 @@ export function registerMicroApps<T extends object = {}>(
         }
 
         await execHooksChain(toArray(beforeLoad), app);
-
+        
+        debugger;
         // get the lifecycle hooks from module exports
         let { bootstrap: bootstrapApp, mount, unmount } = await execScripts(jsSandbox);
 

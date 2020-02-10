@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { name } = require('./package');
-
+const path = require('path');
 module.exports = {
   entry: './index.js',
   devtool: 'source-map',
@@ -26,7 +26,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        // test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
+        // include: [
+        //   path.resolve('.'),
+        //   path.resolve('./node_modules', 'cron-parser')
+        // ],
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

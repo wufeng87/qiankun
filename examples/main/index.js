@@ -8,6 +8,8 @@ import ReactDOM from 'react-dom';
 // import Vue from 'vue';
 import { registerMicroApps, runAfterFirstMounted, setDefaultMountApp, start } from '../../es';
 import Framework from './Framework';
+import "core-js/stable";
+
 // import Framework from './Framework.vue';
 
 // let app = null;
@@ -55,9 +57,9 @@ initApp();
 
 registerMicroApps(
   [
-    { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
-    { name: 'react15 app', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
-    { name: 'vue app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
+    // { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
+    { name: 'react15-main', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
+    { name: 'sub-app1-app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
   ],
   {
     beforeLoad: [
@@ -78,7 +80,7 @@ registerMicroApps(
   },
 );
 
-setDefaultMountApp('/react');
+setDefaultMountApp('/15react15');
 runAfterFirstMounted(() => console.info('first app mounted'));
 
-start({ prefetch: true });
+start({ prefetch: true, jsSandbox: false, prefetch: false });
