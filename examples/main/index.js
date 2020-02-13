@@ -58,8 +58,8 @@ function startApp() {
     [
       { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
       { name: 'react15 app', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
-      { name: 'vue app', entry: '//192.168.64.68:7101', render, activeRule: genActiveRule('/vue') },
-      // { name: 'fssc', entry: '//192.168.64.68:8099', render, activeRule: genActiveRule('/fssc') },
+      { name: 'vue app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
+      { name: 'fssc', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc') },
     ],
     {
       beforeLoad: [
