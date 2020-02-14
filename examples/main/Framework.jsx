@@ -49,7 +49,7 @@ export default function Framework(props) {
             <li><a onClick={() => goto('fssc', '/fssc')}>fssc</a></li>
             <li><a onClick={() => toApp1()}>应收</a></li>
             <li><a onClick={() => toApp2()}>应付</a></li>
-
+            <li><a onClick={() => goto('pro', '/pro')}>pro</a></li>
 
           </ol>
         </nav>
