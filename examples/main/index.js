@@ -61,6 +61,7 @@ function startApp() {
       { name: 'vue app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
       { name: 'ant-design-pro', entry: '//localhost:8081', render, activeRule: genActiveRule('/pro') },
       { name: 'fssc', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc') },
+      { name: 'p1', entry: '//localhost:8877', render, activeRule: genActiveRule('/p1') },
     ],
     {
       beforeLoad: [
@@ -85,7 +86,8 @@ function startApp() {
   runAfterFirstMounted(() => console.info('first app mounted'));
 
   start({
-    prefetch: true,
+    // prefetch: true,
+    prefetch: false,
     // jsSandbox: false,  // 测试ie 禁用沙箱
   });
 }

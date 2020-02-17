@@ -46,10 +46,12 @@ export default function Framework(props) {
             <li><a onClick={() => goto('react15 app', '/15react15')}>react15 + antd2</a></li>
             <li><a onClick={() => goto('vue app', '/vue')}>vue2 + element2</a></li>
             <li><a onClick={() => goto('react app', '/react')}>react16 + antd3</a></li>
-            <li><a onClick={() => goto('fssc', '/fssc')}>fssc</a></li>
-            <li><a onClick={() => toApp1()}>应收</a></li>
-            <li><a onClick={() => toApp2()}>应付</a></li>
-            <li><a onClick={() => goto('pro', '/pro')}>pro</a></li>
+            {/* <li><a onClick={() => goto('fssc', '/fssc')}>fssc</a></li> */}
+            <li><a onClick={() => toApp1()}>fssc</a></li>
+            {/* <li><a onClick={() => toApp2()}>应付</a></li> */}
+            <li><a onClick={() => goto('p1', '/p1')}>p1_platform</a></li>
+            <li><a onClick={() => goto('pro', '/pro')}>ant design pro</a></li>
+
 
           </ol>
         </nav>
