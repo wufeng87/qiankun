@@ -1,0 +1,19 @@
+{
+  "name": "qiankun",
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build"
+    }
+  ],
+  "build": {
+    "env": {
+      "NOW_DEPLOY": "true"
+    }
+  },
+  "github": {
+    "silent": true
+  },
+  "alias": ["qiankun.umijs.org"]
+}

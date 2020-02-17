@@ -5,7 +5,10 @@
   "keywords": [
     "micro frontend",
     "microfrontend",
-    "micro frontends"
+    "micro frontends",
+    "micro-frontend",
+    "micro-frontends",
+    "microservice"
   ],
   "main": "./lib/index.js",
   "module": "./es/index.js",
@@ -26,6 +29,9 @@
     "lint:fix": "yarn lint:js -- --fix",
     "lint:prettier": "check-prettier lint",
     "prettier": "prettier -c --write **/*",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "now-build": "npm run docs:build && mv docs/.vuepress/dist dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -54,6 +60,8 @@
     "@types/lodash": "^4.14.129",
     "@types/vfile-message": "1.x",
     "@umijs/fabric": "^1.1.10",
+    "@vuepress/plugin-google-analytics": "^1.2.0",
+    "@vuepress/plugin-pwa": "^1.2.0",
     "babel-plugin-import": "^1.12.1",
     "check-prettier": "^1.0.3",
     "concurrently": "^4.1.2",
@@ -63,7 +71,8 @@
     "np": "^5.0.3",
     "prettier": "^1.18.2",
     "rimraf": "^3.0.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "vuepress": "^1.2.0"
   },
   "husky": {
     "hooks": {
