@@ -35,7 +35,7 @@ function setWindowProp(prop: PropertyKey, value: any, toDelete?: boolean) {
  * @param appName
  * @param assetPublicPath
  */
-export function genSandbox(appName: string, assetPublicPath: string) {
+export function genSandbox(appName: string, assetPublicPath: string, useJsSandbox: boolean) {
   // 沙箱期间新增的全局变量
   const addedPropsMapInSandbox = new Map<PropertyKey, any>();
   // 沙箱期间更新的全局变量
@@ -57,67 +57,69 @@ export function genSandbox(appName: string, assetPublicPath: string) {
   // see the invariants section of Proxy https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/get
   const fakeWindow = Object.create(null) as Window;
 
-  const sandbox: WindowProxy = new Proxy(fakeWindow, {
-    set(_: Window, p: PropertyKey, value: any): boolean {
-      if (sandboxRunning) {
-        if (!rawWindow.hasOwnProperty(p)) {
-          addedPropsMapInSandbox.set(p, value);
-        } else if (!modifiedPropsOriginalValueMapInSandbox.has(p)) {
-          // 如果当前 window 对象存在该属性，且 record map 中未记录过，则记录该属性初始值
-          const originalValue = (rawWindow as any)[p];
-          modifiedPropsOriginalValueMapInSandbox.set(p, originalValue);
-        }
+  const sandbox: WindowProxy = useJsSandbox
+    ? new Proxy(fakeWindow, {
+        set(_: Window, p: PropertyKey, value: any): boolean {
+          if (sandboxRunning) {
+            if (!rawWindow.hasOwnProperty(p)) {
+              addedPropsMapInSandbox.set(p, value);
+            } else if (!modifiedPropsOriginalValueMapInSandbox.has(p)) {
+              // 如果当前 window 对象存在该属性，且 record map 中未记录过，则记录该属性初始值
+              const originalValue = (rawWindow as any)[p];
+              modifiedPropsOriginalValueMapInSandbox.set(p, originalValue);
+            }
 
-        currentUpdatedPropsValueMap.set(p, value);
-        // 必须重新设置 window 对象保证下次 get 时能拿到已更新的数据
-        // eslint-disable-next-line no-param-reassign
-        (rawWindow as any)[p] = value;
+            currentUpdatedPropsValueMap.set(p, value);
+            // 必须重新设置 window 对象保证下次 get 时能拿到已更新的数据
+            // eslint-disable-next-line no-param-reassign
+            (rawWindow as any)[p] = value;
 
-        return true;
-      }
+            return true;
+          }
 
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(`Try to set window.${p.toString()} while js sandbox destroyed or not active in ${appName}!`);
-      }
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`Try to set window.${p.toString()} while js sandbox destroyed or not active in ${appName}!`);
+          }
 
-      // 在 strict-mode 下，Proxy 的 handler.set 返回 false 会抛出 TypeError，在沙箱卸载的情况下应该忽略错误
-      return true;
-    },
+          // 在 strict-mode 下，Proxy 的 handler.set 返回 false 会抛出 TypeError，在沙箱卸载的情况下应该忽略错误
+          return true;
+        },
 
-    get(_: Window, p: PropertyKey): any {
-      // avoid who using window.window or window.self to escape the sandbox environment to touch the really window
-      // or use window.top to check if an iframe context
-      // see https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js#L13
-      if (p === 'top' || p === 'window' || p === 'self') {
-        return sandbox;
-      }
+        get(_: Window, p: PropertyKey): any {
+          // avoid who using window.window or window.self to escape the sandbox environment to touch the really window
+          // or use window.top to check if an iframe context
+          // see https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js#L13
+          if (p === 'top' || p === 'window' || p === 'self') {
+            return sandbox;
+          }
 
-      const value = (rawWindow as any)[p];
-      /*
+          const value = (rawWindow as any)[p];
+          /*
       仅绑定 !isConstructable && isCallable 的函数对象，如 window.console、window.atob 这类。目前没有完美的检测方式，这里通过 prototype 中是否还有可枚举的拓展方法的方式来判断
       @warning 这里不要随意替换成别的判断方式，因为可能触发一些 edge case（比如在 lodash.isFunction 在 iframe 上下文中可能由于调用了 top window 对象触发的安全异常）
        */
-      if (typeof value === 'function' && !isConstructable(value)) {
-        if (value[boundValueSymbol]) {
-          return value[boundValueSymbol];
-        }
+          if (typeof value === 'function' && !isConstructable(value)) {
+            if (value[boundValueSymbol]) {
+              return value[boundValueSymbol];
+            }
 
-        const boundValue = value.bind(rawWindow);
-        // some callable function has custom fields, we need to copy the enumerable props to boundValue. such as moment function.
-        Object.keys(value).forEach(key => (boundValue[key] = value[key]));
-        Object.defineProperty(value, boundValueSymbol, { enumerable: false, value: boundValue });
-        return boundValue;
-      }
+            const boundValue = value.bind(rawWindow);
+            // some callable function has custom fields, we need to copy the enumerable props to boundValue. such as moment function.
+            Object.keys(value).forEach(key => (boundValue[key] = value[key]));
+            Object.defineProperty(value, boundValueSymbol, { enumerable: false, value: boundValue });
+            return boundValue;
+          }
 
-      return value;
-    },
+          return value;
+        },
 
-    // trap in operator
-    // see https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/constants.js#L12
-    has(_: Window, p: string | number | symbol): boolean {
-      return p in rawWindow;
-    },
-  });
+        // trap in operator
+        // see https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/constants.js#L12
+        has(_: Window, p: string | number | symbol): boolean {
+          return p in rawWindow;
+        },
+      })
+    : rawWindow;
 
   // some side effect could be be invoked while bootstrapping, such as dynamic stylesheet injection with style-loader, especially during the development phase
   const bootstrappingFreers = hijackAtBootstrapping(appName, assetPublicPath, sandbox);
@@ -143,7 +145,7 @@ export function genSandbox(appName: string, assetPublicPath: string) {
 
       /* ------------------------------------------ 1. 启动/恢复 快照 ------------------------------------------ */
       // 沙箱未启动说明为唤醒流程，此时需从之前的修改记录中恢复上下文
-      if (!sandboxRunning) {
+      if (!sandboxRunning && useJsSandbox) {
         currentUpdatedPropsValueMap.forEach((v, p) => setWindowProp(p, v));
       }
 
@@ -180,8 +182,10 @@ export function genSandbox(appName: string, assetPublicPath: string) {
 
       // renderSandboxSnapshot = snapshot(currentUpdatedPropsValueMapForSnapshot);
       // restore global props to initial snapshot
-      modifiedPropsOriginalValueMapInSandbox.forEach((v, p) => setWindowProp(p, v));
-      addedPropsMapInSandbox.forEach((_, p) => setWindowProp(p, undefined, true));
+      if (useJsSandbox) {
+        modifiedPropsOriginalValueMapInSandbox.forEach((v, p) => setWindowProp(p, v));
+        addedPropsMapInSandbox.forEach((_, p) => setWindowProp(p, undefined, true));
+      }
 
       sandboxRunning = false;
     },

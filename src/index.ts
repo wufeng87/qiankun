@@ -104,12 +104,12 @@ export function registerMicroApps<T extends object = {}>(
         let jsSandbox: Window = window;
         let mountSandbox = () => Promise.resolve();
         let unmountSandbox = () => Promise.resolve();
-        if (useJsSandbox) {
-          const sandbox = genSandbox(appName, assetPublicPath);
-          jsSandbox = sandbox.sandbox;
-          mountSandbox = sandbox.mount;
-          unmountSandbox = sandbox.unmount;
-        }
+        // if (useJsSandbox) {
+        const sandbox = genSandbox(appName, assetPublicPath, useJsSandbox);
+        jsSandbox = sandbox.sandbox;
+        mountSandbox = sandbox.mount;
+        unmountSandbox = sandbox.unmount;
+        // }
 
         await execHooksChain(toArray(beforeLoad), app);
 
