@@ -26,7 +26,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        // test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
+        // ie11 需要注释掉
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

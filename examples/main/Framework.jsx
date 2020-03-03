@@ -47,6 +47,7 @@ export default function Framework(props) {
             <li><a onClick={() => goto('vue app', '/vue')}>vue2 + element2</a></li>
             <li><a onClick={() => goto('react app', '/react')}>react16 + antd3</a></li>
             <li><a onClick={() => goto('fssc', '/fssc')}>fssc</a></li>
+            <li><a onClick={() => goto('fssc1', '/fssc1')}>fssc1</a></li>
             <li><a onClick={() => toApp1()}>应收</a></li>
             <li><a onClick={() => toApp2()}>应付</a></li>
 

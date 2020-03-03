@@ -11,6 +11,7 @@ import Framework from './Framework';
 // import Framework from './Framework.vue';
 // import "import-map-overrides"
 // let app = null;
+import "core-js/stable";
 
 function render({ appContent, loading }) {
   /*
@@ -57,9 +58,10 @@ function startApp() {
   registerMicroApps(
     [
       { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
-      { name: 'react15 app', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
+      { name: 'react15-main', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
       { name: 'vue app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
-      { name: 'fssc', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc') },
+      { name: 'fssc-index', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc') },
+      // { name: 'fssc-index2', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc1') },
     ],
     {
       beforeLoad: [
@@ -80,12 +82,15 @@ function startApp() {
     },
   );
 
-  setDefaultMountApp('/react');
+  setDefaultMountApp('/15react15');
+  // setDefaultMountApp('/fssc');
   runAfterFirstMounted(() => console.info('first app mounted'));
 
   start({
     prefetch: true,
-    // jsSandbox: false,  // 测试ie 禁用沙箱
+    prefetch: false,
+    jsSandbox: false,  // 测试ie 禁用沙箱
+    prefetch:false,
   });
 }
 

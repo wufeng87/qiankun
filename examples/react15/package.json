@@ -29,6 +29,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "browserslist": [
-    "last 2 Chrome versions"
+    ">0.2%",
+    "not ie <= 11",
+    "not op_mini all"
   ]
 }
