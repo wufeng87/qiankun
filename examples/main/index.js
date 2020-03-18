@@ -2,6 +2,7 @@
  * @author Kuitos
  * @since 2019-05-16
  */
+import "core-js/stable";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,7 +12,6 @@ import Framework from './Framework';
 // import Framework from './Framework.vue';
 // import "import-map-overrides"
 // let app = null;
-import "core-js/stable";
 
 function render({ appContent, loading }) {
   /*
@@ -59,7 +59,7 @@ function startApp() {
     [
       { name: 'react16-main', entry: '//localhost:7100', render, activeRule: genActiveRule('/react') },
       { name: 'react15-main', entry: '//localhost:7102', render, activeRule: genActiveRule('/15react15') },
-      { name: 'vue app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
+      { name: 'sub-app1-app', entry: '//localhost:7101', render, activeRule: genActiveRule('/vue') },
       { name: 'fssc-index', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc') },
       // { name: 'fssc-index2', entry: '//localhost:8099', render, activeRule: genActiveRule('/fssc1') },
     ],

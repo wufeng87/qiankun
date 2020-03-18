@@ -5,7 +5,7 @@
 
 import { Button, Modal, version as antdVersion } from 'antd';
 import React, { version } from 'react';
-
+import FixedTable from './FixedTable'
 export default class App extends React.Component {
 
   constructor() {
@@ -33,13 +33,19 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <div style={{ color: 'green' }}>Hello React15</div>
+        {/* <div style={{ color: 'green' }}>Hello React15</div>
         <Button onClick={this.openFssc}>fssc1</Button>
         <Button onClick={this.openFssc2}>fssc2</Button>
         <Button onClick={() => this.setVisible(true)}>open antd modal</Button>
         <Modal visible={visible} onCancel={() => this.setVisible(false)} onOk={() => this.setVisible(false)}>
           Hello React {version} and antd {antdVersion}
         </Modal>
+        <div style={{ height: 500, width: 1200, overflow: 'scroll' }}>
+          <div style={{ height: 480, width: 10, border: '1px solid green' }}></div>
+        </div>
+        <div style={{ height: 1200, width: 10, border: '1px solid red' }}></div> */}
+        <FixedTable></FixedTable>
+
       </div>
     );
   }

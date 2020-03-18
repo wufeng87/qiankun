@@ -12,8 +12,8 @@
   "dependencies": {
     "antd": "2.13.14",
     "loadjs": "^4.2.0",
-    "react": "15.6.2",
-    "react-dom": "15.6.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "toast-loader": "^3.0.2"
   },
   "devDependencies": {

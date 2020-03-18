@@ -13,6 +13,7 @@
   "sideEffects": false,
   "scripts": {
     "start": "concurrently \"yarn start:main\" \"yarn start:react16\" \"yarn start:react15\" \"yarn start:vue\"",
+    "start2": "concurrently \"yarn start:main\" \"yarn start:react15\" \"yarn start:vue\"",
     "install:examples": "yarn build && cd examples/main && yarn && cd ../react16 && yarn && cd ../react15 && yarn && cd ../vue && yarn",
     "start:main": "cd examples/main && yarn start",
     "start:react16": "cd examples/react16 && yarn start",
